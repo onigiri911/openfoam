@@ -10,20 +10,19 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
     object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 application     simpleFoam;
 
-startFrom       startTime;
+startFrom       latestTime;
 
 startTime       0;
 
 stopAt          endTime;
 
-endTime         2000;
+endTime         500;
 
 deltaT          1;
 
@@ -33,7 +32,7 @@ writeInterval   100;
 
 purgeWrite      0;
 
-writeFormat     ascii;
+writeFormat     binary;
 
 writePrecision  6;
 
@@ -45,15 +44,12 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-cacheTemporaryObjects
-(
-    kEpsilon:G
-);
-
 functions
 {
-    #includeFunc streamlines
-    #includeFunc writeObjects(kEpsilon:G)
+    #include "streamLines"
+    #include "cuttingPlane"
+    #include "forceCoeffs"
 }
+
 
 // ************************************************************************* //

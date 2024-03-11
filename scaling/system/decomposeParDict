@@ -9,41 +9,33 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0";
-    object      epsilon;
+    class       dictionary;
+    object      decomposeParDict;
 }
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -3 0 0 0 0];
+numberOfSubdomains 6;
 
-internalField   uniform 14.855;
+method          hierarchical;
+// method          ptscotch;
 
-boundaryField
+simpleCoeffs
 {
-    inlet
-    {
-        type            fixedValue;
-        value           uniform 14.855;
-    }
-    outlet
-    {
-        type            zeroGradient;
-    }
-    upperWall
-    {
-        type            epsilonWallFunction;
-        value           uniform 14.855;
-    }
-    lowerWall
-    {
-        type            epsilonWallFunction;
-        value           uniform 14.855;
-    }
-    frontAndBack
-    {
-        type            empty;
-    }
+    n               (4 1 1);
+    delta           0.001;
+}
+
+hierarchicalCoeffs
+{
+    n               (3 2 1);
+    delta           0.001;
+    order           xyz;
+}
+
+manualCoeffs
+{
+    dataFile        "cellDecomposition";
 }
 
 

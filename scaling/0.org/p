@@ -10,40 +10,43 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    location    "0";
-    object      v2;
+    object      p;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 -1 0 0 0 0];
+#include        "include/initialConditions"
 
-internalField   uniform 0;
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform $pressure;
 
 boundaryField
 {
+    //- Set patchGroups for constraint patches
+    #includeEtc "caseDicts/setConstraintTypes"
+
     inlet
     {
         type            zeroGradient;
     }
+
     outlet
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    lowerWall
     {
         type            zeroGradient;
     }
-    upperWall
-    {
-        type            fWallFunction;
-        value           uniform 0;
-    }
-    lowerWall
-    {
-        type            fWallFunction;
-        value           uniform 0;
-    }
-    frontAndBack
-    {
-        type            empty;
-    }
-}
 
+    motorBikeGroup
+    {
+        type            zeroGradient;
+    }
+
+    #include "include/frontBackUpperPatches"
+}
 
 // ************************************************************************* //

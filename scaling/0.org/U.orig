@@ -9,41 +9,44 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
+    class       volVectorField;
     location    "0";
-    object      v2;
+    object      U;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -2 0 0 0 0];
+#include        "include/initialConditions"
 
-internalField   uniform 0.25;
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform $flowVelocity;
 
 boundaryField
 {
-    inlet
+    //- Set patchGroups for constraint patches
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    #include "include/fixedInlet"
+
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           $internalField;
+    }
+
+    lowerWall
     {
         type            fixedValue;
         value           $internalField;
     }
-    outlet
+
+    motorBikeGroup
     {
-        type            zeroGradient;
+        type            noSlip;
     }
-    upperWall
-    {
-        type            v2WallFunction;
-        value           $internalField;
-    }
-    lowerWall
-    {
-        type            v2WallFunction;
-        value           $internalField;
-    }
-    frontAndBack
-    {
-        type            empty;
-    }
+
+    #include "include/frontBackUpperPatches"
 }
 
 

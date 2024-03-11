@@ -10,41 +10,56 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    object      p;
+    location    "0";
+    object      nut;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 -2 0 0 0 0];
+dimensions      [0 2 -1 0 0 0 0];
 
 internalField   uniform 0;
 
 boundaryField
 {
+    //- Set patchGroups for constraint patches
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    frontAndBack
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+
     inlet
     {
-        type            zeroGradient;
+        type            calculated;
+        value           uniform 0;
     }
 
     outlet
     {
-        type            fixedValue;
+        type            calculated;
+        value           uniform 0;
+    }
+
+    lowerWall
+    {
+        type            nutkWallFunction;
         value           uniform 0;
     }
 
     upperWall
     {
-        type            zeroGradient;
+        type            calculated;
+        value           uniform 0;
     }
 
-    lowerWall
+    motorBikeGroup
     {
-        type            zeroGradient;
-    }
-
-    frontAndBack
-    {
-        type            empty;
+        type            nutkWallFunction;
+        value           uniform 0;
     }
 }
+
 
 // ************************************************************************* //

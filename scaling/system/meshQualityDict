@@ -9,42 +9,16 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volVectorField;
-    object      U;
+    class       dictionary;
+    object      meshQualityDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 -1 0 0 0 0];
+// Include defaults parameters from master dictionary
+#includeEtc "caseDicts/mesh/generation/meshQualityDict"
 
-internalField   uniform (0 0 0);
+//- minFaceWeight (0 -> 0.5)
+minFaceWeight 0.02;
 
-boundaryField
-{
-    inlet
-    {
-        type            fixedValue;
-        value           uniform (10 0 0);
-    }
-
-    outlet
-    {
-        type            zeroGradient;
-    }
-
-    upperWall
-    {
-        type            noSlip;
-    }
-
-    lowerWall
-    {
-        type            noSlip;
-    }
-
-    frontAndBack
-    {
-        type            empty;
-    }
-}
 
 // ************************************************************************* //

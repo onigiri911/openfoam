@@ -9,42 +9,23 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    location    "0";
-    object      omega;
+    class       dictionary;
+    object      surfaceFeaturesDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 -1 0 0 0 0];
+surfaces ("motorBike.obj");
 
-internalField   uniform 440.15;
+// Identify a feature when angle between faces < includedAngle
+includedAngle       150;
 
-boundaryField
+subsetFeatures
 {
-    inlet
-    {
-        type            fixedValue;
-        value           $internalField;
-    }
-    outlet
-    {
-        type            zeroGradient;
-    }
-    upperWall
-    {
-        type            omegaWallFunction;
-        value           $internalField;
-    }
-    lowerWall
-    {
-        type            omegaWallFunction;
-        value           $internalField;
-    }
-    frontAndBack
-    {
-        type            empty;
-    }
-}
+    // Keep nonManifold edges (edges with >2 connected faces)
+    nonManifoldEdges       no;
 
+    // Keep open edges (edges with 1 connected face)
+    openEdges       yes;
+}
 
 // ************************************************************************* //
