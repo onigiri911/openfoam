@@ -1,0 +1,75 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  8
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Note: this file is a Copy of $FOAM_TUTORIALS/resources/blockMesh/pitzDaily
+
+convertToMeters 1;
+
+vertices
+(
+    (0 0 0)
+    (7.3 0 0)
+    (7.3 0 3.3)
+    (0 0 3.3)
+    (0 11 0)
+    (7.3 11 0)
+    (7.3 11 3.3)
+    (0 11 3.3)
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (50,50,50)
+    simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+patches
+(
+   patch maxY
+   (
+       (5 6 7 8)
+   )
+   patch minX
+   (
+       (1 5 8 4)
+   )
+   patch minY
+   (
+       (1 2 3 4)
+   )
+   patch maxX
+   (
+       (2 6 7 3)
+   )
+   patch minZ
+   (
+       (1 2 6 5)
+   )
+   patch maxZ
+   (
+       (4 3 7 8)
+   ) 
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
